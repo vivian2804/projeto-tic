@@ -1,0 +1,13 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:5800@localhost:5432/TIC"
+}
+
+model tb_curso {
+  cod_curso Int     @id(map: "pk_tb_curso_cod_curso")
+  nm_curso  String? @db.VarChar(40)
+}
