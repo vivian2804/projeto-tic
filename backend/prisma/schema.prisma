@@ -10,4 +10,6 @@ datasource db {
 model tb_curso {
   cod_curso Int     @id(map: "pk_tb_curso_cod_curso")
   nm_curso  String? @db.VarChar(40)
+
+  @@map("curso")
 }
