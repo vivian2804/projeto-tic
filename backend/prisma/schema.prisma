@@ -12,4 +12,5 @@ model tb_curso {
   nm_curso  String? @db.VarChar(40)
 
   @@map("curso")
+  // Teste Caio
 }
