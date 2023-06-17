@@ -68,43 +68,73 @@ export async function AppRoutes(server:FastifyInstance){
         return newForncedor
     })        
 
-    // rota para atualizar o conteúdo de um post
-    server.patch('/post/content', async (request) => {
-        // cria um objeto zod para definir um esquema de dad0s
+    server.patch('/fornecedor/update', async (request) => {
         const contentBody = z.object({
             id: z.number(),
-            content: z.string()
+            nomefor: z.string(),
+            fisjur: z.string(),
+            cnpjcpf: z.string(),
+            telefone: z.string(),
+            cep: z.string(),
+            cidade: z.string(),
+            rua: z.string(),
+            bairro: z.string(),
+            numero: z.number(),
+            complemento: z.string(),
+            email: z.string(),
         })
-        // recupera os dados do frontend
-        const {id, content} = contentBody.parse(request.body)
-        // atualiza no banco de dados
-        const postUpdated = await prisma.post.update({
+    
+        const {
+            id,
+            nomefor,
+            fisjur,
+            cnpjcpf,
+            telefone,
+            cep,
+            cidade,
+            rua,
+            bairro,
+            numero,
+            complemento,
+            email,
+        } = contentBody.parse(request.body)
+    
+        const fornecedorUpdated = await prisma.tbForncedores.update({
             where: {
-                id: id
+                idfor: id,
             },
             data: {
-                content: content
-            }
+                nomefor,
+                fisjur,
+                cnpjcpf,
+                telefone,
+                cep,
+                cidade,
+                rua,
+                bairro,
+                numero,
+                complemento,
+                email,
+            },
         })
-        return postUpdated
-    })
+    
+        return fornecedorUpdated
+    })    
 
-    // rota para remover um post do banco de dados
-    server.delete('/post/:id', async (request) => {
-        // criar objeto zod para esquema de dados
+    server.delete('/fornecedor/delete/:id', async (request) => {
         const idParam = z.object({
-            id: z.string()
+            id: z.string(),
         })
-        // recupera o id do frontend
-        const {id} = idParam.parse(request.params)
-
-    const idNumber = Number(id)
-        // remove do banco de dados
-        const postDeleted = await prisma.post.delete({
+    
+        const { id } = idParam.parse(request.params)
+        const fornecedorId = Number(id)
+    
+        const fornecedorDeleted = await prisma.tbForncedores.delete({
             where: {
-                id: idNumber
-            }
+                idfor: fornecedorId,
+            },
         })
-        return postDeleted
-    })
+    
+        return fornecedorDeleted
+    })   
 }
