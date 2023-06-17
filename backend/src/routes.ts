@@ -4,18 +4,8 @@ import {prisma} from './lib/prisma'
 
 export async function AppRoutes(server:FastifyInstance){
 
-    server.get('/fornecedor/:fornecedorId', async (request) => {
-        const fornecedorIdParam = z.object({
-            fornecedorId: z.string(),
-        })
-    
-        const { fornecedorId } = fornecedorIdParam.parse(request.params)
-    
-        const fornecedor = await prisma.tbForncedores.findUnique({
-            where: {
-                idfor: Number(fornecedorId),
-            },
-        })
+    server.get('/fornecedor', async () => {        
+        const fornecedor = await prisma.tbFornecedores.findMany()
     
         return fornecedor
     })
@@ -23,45 +13,45 @@ export async function AppRoutes(server:FastifyInstance){
     server.post('/fornecedor/add', async (request) => {
         const postBody = z.object({
             nomefor: z.string(),
-            fisjur: z.string(),
+            email: z.string(),
             cnpjcpf: z.string(),
             telefone: z.string(),
+            fisjur: z.string(),
             cep: z.string(),
-            cidade: z.string(),
             rua: z.string(),
+            cidade: z.string(),
             bairro: z.string(),
             numero: z.number(),
             complemento: z.string(),
-            email: z.string(),
         })
     
         const {
             nomefor,
-            fisjur,
+            email,
             cnpjcpf,
             telefone,
+            fisjur,
             cep,
-            cidade,
             rua,
+            cidade,
             bairro,
             numero,
             complemento,
-            email,
         } = postBody.parse(request.body)
     
-        const newForncedor = await prisma.tbForncedores.create({
+        const newForncedor = await prisma.tbFornecedores.create({
             data: {
                 nomefor,
-                fisjur,
+                email,
                 cnpjcpf,
                 telefone,
+                fisjur,
                 cep,
-                cidade,
                 rua,
+                cidade,
                 bairro,
                 numero,
                 complemento,
-                email,
             },
         })
     
@@ -99,7 +89,7 @@ export async function AppRoutes(server:FastifyInstance){
             email,
         } = contentBody.parse(request.body)
     
-        const fornecedorUpdated = await prisma.tbForncedores.update({
+        const fornecedorUpdated = await prisma.tbFornecedores.update({
             where: {
                 idfor: id,
             },
@@ -129,7 +119,7 @@ export async function AppRoutes(server:FastifyInstance){
         const { id } = idParam.parse(request.params)
         const fornecedorId = Number(id)
     
-        const fornecedorDeleted = await prisma.tbForncedores.delete({
+        const fornecedorDeleted = await prisma.tbFornecedores.delete({
             where: {
                 idfor: fornecedorId,
             },

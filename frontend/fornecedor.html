@@ -36,88 +36,86 @@
         </div>
     </nav>
     <div class="container">
-        <div class="form">
-            <form class="border p-3 m-3">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3 mt-4">
-                            <label for="name" class="form-label">Nome</label>
-                            <input id="name" class="form-control" type="text" />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3 mt-4">
-                            <label for="email" class="form-label">Email</label>
-                            <input id="email" class="form-control" type="text" />
-                        </div>
+        <form class="border p-3 m-3">
+            <input id="id" hidden>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3 mt-4">
+                        <label for="nomefor" class="form-label">Nome</label>
+                        <input id="nomefor" class="form-control" type="text" />
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="cpf_cnpj" class="form-label"> CPF/CNPJ </label>
-                            <input id="cpf_cnpj" class="form-control" type="text"/>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="telefone" class="form-label"> Telefone </label>
-                            <input id="telefone" class="form-control" type="text"/>
-                        </div>
+                <div class="col-md-6">
+                    <div class="mb-3 mt-4">
+                        <label for="email" class="form-label">Email</label>
+                        <input id="email" class="form-control" type="text" />
                     </div>
                 </div>
-                <div class="mb-3">
-                    <input class="form-check-input" id="fisico" name="type_person" type="radio"/> 
-                    <label for="fisico"> Pessoa Fisica </label>
-                    <input class="form-check-input" id="juridico" name="type_person" type="radio"/> 
-                    <label for="juridico"> Pessoa Juridica </label>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3 mt-2">
-                            <label for="cep" class="form-label"> CEP </label>
-                    <input id="cep" class="form-control" type="text"/>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3 mt-2">
-                            <label for="cidade" class="form-label"> Cidade </label>
-                            <input id="cidade" class="form-control" type="text"/>
-                        </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="cnpjcpf" class="form-label"> CPF/CNPJ </label>
+                        <input id="cnpjcpf" class="form-control" type="text"/>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="rua" class="form-label"> Rua </label>
-                            <input id="rua" class="form-control" type="text"/>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="bairro" class="form-label"> Bairro </label>
-                            <input id="bairro" class="form-control" type="text"/>
-                        </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="telefone" class="form-label"> Telefone </label>
+                        <input id="telefone" class="form-control" type="text"/>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="numero" class="form-label"> Numero </label>
-                            <input id="numero" class="form-control" type="number"/>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="complemento" class="form-label"> Complemento </label>
-                            <input id="complemento" class="form-control" type="text"/>
-                        </div>
+            </div>
+            <div class="mb-3">
+                <input class="form-check-input" id="fisico" name="fisjur" type="radio"/> 
+                <label for="fisico"> Pessoa Fisica </label>
+                <input class="form-check-input" id="juridico" name="fisjur" type="radio"/> 
+                <label for="juridico"> Pessoa Juridica </label>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3 mt-2">
+                        <label for="cep" class="form-label"> CEP </label>
+                        <input id="cep" class="form-control" type="text"/>
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary" onClick="confirmar()">Confirmar</button>
-            </form>
-        </div>
-        
+                <div class="col-md-6">
+                    <div class="mb-3 mt-2">
+                        <label for="cidade" class="form-label"> Cidade </label>
+                        <input id="cidade" class="form-control" type="text"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="rua" class="form-label"> Rua </label>
+                        <input id="rua" class="form-control" type="text"/>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="bairro" class="form-label"> Bairro </label>
+                        <input id="bairro" class="form-control" type="text"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="numero" class="form-label"> Numero </label>
+                        <input id="numero" class="form-control" type="number"/>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="complemento" class="form-label"> Complemento </label>
+                        <input id="complemento" class="form-control" type="text"/>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary" onClick="confirmar()">Confirmar</button>
+        </form>        
         <table class="table mt-5">
             <thead>
                 <tr>
