@@ -47,13 +47,28 @@ export async function AppRoutes(server:FastifyInstance){
             return posts
         })
 
+        server.get('/fornecedor/user/:fornecedorId', async (request) => {
+            // define um objeto zod contendo o esquema de dados
+            const userIdParam = z.object({
+                userId: z.string()
+            })
+            // recupera o dado do frontend a partir do zod titleParam
+            // converte o texto enviado pelo frontend para a variável title
+            const {userId} = userIdParam.parse(request.params)
 
+            const posts = await prisma.post.findMany({
+                where: {
+                    userId: Number(userId)     
+                }          
+                })
+            return posts
+        })
 
         // rota para criação de um post, adição de um post no banco - verbo post
         server.post('/post', async (request) => {
             // define um objeto zod contendo o esquema de dados
             const postBody = z.object({
-                title: z.string(),
+                name: z.string(),
                 content: z.string(),
                 likes: z.number(),
                 published: z.boolean(),
@@ -61,11 +76,11 @@ export async function AppRoutes(server:FastifyInstance){
             })
             // recupera o dado do frontend a partir do zod postBody
             // converte o texto enviado pelo frontend para as variáveis title, content e published
-            const {title, content, likes, published, userId} = postBody.parse(request.body)
+            const {name, content, likes, published, userId} = postBody.parse(request.body)
             // cria um novo post no banco de dados
             const newPost = await prisma.post.create({
                 data: {
-                    title,
+                    name,
                     content,
                     likes,
                     published,
