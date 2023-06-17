@@ -3,7 +3,7 @@ async function getFornecedor(){
     // recupera o cookie do id do usuário
     let aux = document.cookie.split('=')
     let fornecedorId = Number(aux[1])
-    const posts = await fetch(`http://localhost:3333/fornecedor/user/${fornecedorId}`)
+    const posts = await fetch(`http://localhost:3333/fornecedor/${fornecedorId}`)
                         .then(resposta => {
                             return resposta.json()
                         })
@@ -79,7 +79,7 @@ async function confirmar(){
     }
      
     // chama a api
-    const post = await fetch('http://localhost:3333/post', {
+    const post = await fetch('http://localhost:3333/fornecedor/add', {
         method: verbo,
         body: JSON.stringify(corpo), // JSON transformado em string
         headers: {
