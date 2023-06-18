@@ -57,10 +57,10 @@ export async function AppRoutes(server:FastifyInstance){
     
         return newForncedor
     })        
-
-    server.patch('/fornecedor/update', async (request) => {
-        const contentBody = z.object({
-            id: z.number(),
+    
+    server.put('/fornecedor/update', async (request) => {
+        const putBody = z.object({
+            idfor: z.number(),
             nomefor: z.string(),
             fisjur: z.string(),
             cnpjcpf: z.string(),
@@ -75,7 +75,7 @@ export async function AppRoutes(server:FastifyInstance){
         })
     
         const {
-            id,
+            idfor,
             nomefor,
             fisjur,
             cnpjcpf,
@@ -87,11 +87,11 @@ export async function AppRoutes(server:FastifyInstance){
             numero,
             complemento,
             email,
-        } = contentBody.parse(request.body)
-    
-        const fornecedorUpdated = await prisma.tbFornecedores.update({
+        } = putBody.parse(request.body)
+
+        const fornecedorUpdated = await prisma.tbFornecedores.updateMany({
             where: {
-                idfor: id,
+                idfor: idfor,
             },
             data: {
                 nomefor,
@@ -107,17 +107,16 @@ export async function AppRoutes(server:FastifyInstance){
                 email,
             },
         })
-    
-        return fornecedorUpdated
-    })    
+        return (fornecedorUpdated.count >= 1) ?  'Atualização com sucesso' :  'Nada foi atualizado'
+    })
 
-    server.delete('/fornecedor/delete/:id', async (request) => {
+    server.delete('/fornecedor/delete/:idfor', async (request) => {
         const idParam = z.object({
-            id: z.string(),
+            idfor: z.string(),
         })
     
-        const { id } = idParam.parse(request.params)
-        const fornecedorId = Number(id)
+        const { idfor } = idParam.parse(request.params)
+        const fornecedorId = Number(idfor)
     
         const fornecedorDeleted = await prisma.tbFornecedores.delete({
             where: {

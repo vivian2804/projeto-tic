@@ -1,89 +1,113 @@
-async function getFornecedor(){    
+async function exibirFornecedor(){    
     const fornecedores = await fetch(`http://localhost:3333/fornecedor`)
                         .then(resposta => {
                             return resposta.json()
                         })
 
     let conteudoTabela = ''
-    // percorre cada post presente em posts e montar o conteúdo da tabela
+
     fornecedores.forEach(fornecedor => {            
-        // acumula na variável conteudoTabela os dados de cada post
-        conteudoTabela += `<tr> <td> ${fornecedor.id} </td> <td> ${fornecedor.nomefor} </td> <td> ${fornecedor.email} </td> <td> ${fornecedor.cpfcnpj} </td> <td> ${fornecedor.telefone} </td> <td> ${fornecedor.fisjur} </td> <td> ${fornecedor.cep} </td> <td> ${fornecedor.cidade} </td> <td> ${fornecedor.rua} </td> <td> ${fornecedor.bairro} </td> <td> ${fornecedor.numero} </td> <td> ${fornecedor.complemento} </td></tr>`
+
+        conteudoTabela += `
+            <tr>
+                <td>${fornecedor.idfor}</td>
+                <td>${fornecedor.nomefor}</td>
+                <td>${fornecedor.email}</td>
+                <td>${fornecedor.cnpjcpf}</td>
+                <td>${fornecedor.telefone}</td>
+                <td>${fornecedor.fisjur}</td>
+                <td>${fornecedor.cep}</td>
+                <td>${fornecedor.cidade}</td>
+                <td>${fornecedor.rua}</td>
+                <td>${fornecedor.bairro}</td>
+                <td>${fornecedor.numero}</td>
+                <td>${fornecedor.complemento}</td>
+                <td>
+                    <button onclick="removerFornecedor(${fornecedor.idfor})">
+                    <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+                <td>
+                    <button onclick="editarFornecedor(${fornecedor.idfor}, '${fornecedor.nomefor}', '${fornecedor.email}', '${fornecedor.cnpjcpf}', '${fornecedor.telefone}', '${fornecedor.fisjur}', '${fornecedor.cep}', '${fornecedor.cidade}', '${fornecedor.rua}', '${fornecedor.bairro}', ${fornecedor.numero}, '${fornecedor.complemento}')">
+                    <i class="bi bi-pencil"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
     })
-    // vamos jogar os dados no HTML
+
     document.getElementById("corpoTabela").innerHTML = conteudoTabela
-
 }
 
-function editar(id, title, content, likes, published){
-    // alimenta o formulário
-    document.getElementById("id").value = id
-    document.getElementById("title").value = title;
-    document.getElementById("content").value = content;
-    document.getElementById("likes").value = likes;
-    (published) ? document.getElementById("sim").checked = true : 
-                  document.getElementById("nao").checked = true
+function editarFornecedor(idfor, nomefor, email, cnpjcpf, fisjur, telefone, cep, cidade, rua, bairro, numero, complemento){
+
+    document.getElementById("id").value = idfor
+    document.getElementById("nomefor").value = nomefor;
+    document.getElementById("email").value = email;
+    document.getElementById("cnpjcpf").value = cnpjcpf;
+    (fisjur) ? document.getElementById("fisico").checked = true : document.getElementById("juridico").checked = true;
+    document.getElementById("telefone").value = telefone;
+    document.getElementById("cep").value = cep;
+    document.getElementById("cidade").value = cidade;
+    document.getElementById("rua").value = rua;
+    document.getElementById("bairro").value = bairro;
+    document.getElementById("numero").value = numero;
+    document.getElementById("complemento").value = complemento;
 }
 
 
-async function remover(id){
-    const confirmacao = confirm('Confirma a exclusão do Post? ')
-    if (!confirmacao){ // clicou em não
+async function removerFornecedor(idfor){
+    const confirmacao = confirm('Confirma a exclusão do Fornecedor? ')
+    if (!confirmacao){
         return 
     }
-    // clicou em sim
-    await fetch(`http://localhost:3333/post/${id}`, {
+    
+    await fetch(`http://localhost:3333/fornecedor/delete/${idfor}`, {
         method: 'DELETE'
     })
     .then(resposta => {
-        alert('Remoção realizada')
+        alert('Fornecedor excluido com sucesso')
     })
     .catch(error => {
-        alert('Problema na remoção')
+        alert('Ops! <br> Ocorreu um problema ao excluir o fornecedor')
     })
-    getFornecedor() // atualiza a tabela
+    exibirFornecedor()
 }
-// consome que api que cadastra um post no banco de dados
-async function confirmar(){
-    // recupera os dados do formulário
+
+async function salvarFornecedor(){
     const nomefor     = document.getElementById("nomefor").value
     const email       = document.getElementById("email").value
-    const cnpjcpf    = document.getElementById("cnpjcpf").value
+    const cnpjcpf     = document.getElementById("cnpjcpf").value
     const telefone    = document.getElementById("telefone").value
-    const fisico      = document.getElementById("fisico").checked
-    const juridico    = document.getElementById("juridico").checked
+    const jurfis      = document.getElementById("fisico").checked
     const cep         = document.getElementById("cep").value
     const rua         = document.getElementById("rua").value
     const cidade      = document.getElementById("cidade").value
     const bairro      = document.getElementById("bairro").value
     const numero      = Number(document.getElementById("numero").value)
     const complemento = document.getElementById("complemento").value
+    const idfor       = Number(document.getElementById("id").value)
 
-    // o id será vazio se for inserção e terá conteúdo se for atualização
-    const id = Number(document.getElementById("id").value)
+    fisjur = jurfis ? 'F' : 'J';
 
-    if (!fisico) { // atualizar
-        fisjur = 'F'
-    }
-    else { // cadastrar
-        fisjur = 'J'
-    }
-   
     let corpo
     let verbo
-    if (id) { // atualizar
-        corpo = {id, nomefor, email, cnpjcpf, telefone, cep, rua, cidade, bairro, numero, complemento}
+    let url
+
+    if (idfor) {
+        corpo = {idfor, nomefor, email, cnpjcpf, telefone, fisjur, cep, rua, cidade, bairro, numero, complemento}
         verbo = 'PUT'
+        url = 'http://localhost:3333/fornecedor/update'
     }
-    else { // cadastrar
+    else {
         corpo = {nomefor, email, cnpjcpf, telefone, fisjur, cep, rua, cidade, bairro, numero, complemento}
         verbo = 'POST'
+        url = 'http://localhost:3333/fornecedor/add'
     }
      
-    // chama a api
-    const fornecedor = await fetch('http://localhost:3333/fornecedor/add', {
+    const fornecedor = await fetch(url, {
         method: verbo,
-        body: JSON.stringify(corpo), // JSON transformado em string
+        body: JSON.stringify(corpo),
         headers: {
             "Content-Type": "application/json;charset=UTF-8"
         }
@@ -94,9 +118,9 @@ async function confirmar(){
     .catch(error => {
         alert('Operação falhou')
     })
-    // atualiza a tabela
-    getFornecedor()
-    // limpa os campos
+
+    exibirFornecedor()
+
     document.getElementById("nomefor").value = ''
     document.getElementById("email").value = ''
     document.getElementById("cnpjcpf").value = ''
@@ -107,7 +131,7 @@ async function confirmar(){
     document.getElementById("rua").value = ''
     document.getElementById("cidade").value = ''
     document.getElementById("bairro").value = ''
-    document.getElementById("numero").value =''
+    document.getElementById("numero").value = ''
     document.getElementById("complemento").value = ''
-    document.getElementById("id").value = '';
+    document.getElementById("id").value = ''
 }
