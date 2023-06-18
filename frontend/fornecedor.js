@@ -28,7 +28,7 @@ async function exibirFornecedor(){
                     </button>
                 </td>
                 <td>
-                    <button onclick="editarFornecedor(${fornecedor.idfor}, '${fornecedor.nomefor}', '${fornecedor.email}', '${fornecedor.cnpjcpf}', '${fornecedor.telefone}', '${fornecedor.fisjur}', '${fornecedor.cep}', '${fornecedor.cidade}', '${fornecedor.rua}', '${fornecedor.bairro}', ${fornecedor.numero}, '${fornecedor.complemento}')">
+                    <button onclick="editarFornecedor(${fornecedor.idfor}, '${fornecedor.nomefor}', '${fornecedor.email}', '${fornecedor.cnpjcpf}', '${fornecedor.fisjur}', '${fornecedor.telefone}', '${fornecedor.cep}', '${fornecedor.cidade}', '${fornecedor.rua}', '${fornecedor.bairro}', ${fornecedor.numero}, '${fornecedor.complemento}')">
                     <i class="bi bi-pencil"></i>
                     </button>
                 </td>
@@ -41,7 +41,7 @@ async function exibirFornecedor(){
 
 function editarFornecedor(idfor, nomefor, email, cnpjcpf, fisjur, telefone, cep, cidade, rua, bairro, numero, complemento){
 
-    document.getElementById("id").value = idfor
+    document.getElementById("id").value = idfor;
     document.getElementById("nomefor").value = nomefor;
     document.getElementById("email").value = email;
     document.getElementById("cnpjcpf").value = cnpjcpf;
@@ -75,18 +75,18 @@ async function removerFornecedor(idfor){
 }
 
 async function salvarFornecedor(){
-    const nomefor     = document.getElementById("nomefor").value
-    const email       = document.getElementById("email").value
-    const cnpjcpf     = document.getElementById("cnpjcpf").value
-    const telefone    = document.getElementById("telefone").value
-    const jurfis      = document.getElementById("fisico").checked
-    const cep         = document.getElementById("cep").value
-    const rua         = document.getElementById("rua").value
-    const cidade      = document.getElementById("cidade").value
-    const bairro      = document.getElementById("bairro").value
-    const numero      = Number(document.getElementById("numero").value)
-    const complemento = document.getElementById("complemento").value
-    const idfor       = Number(document.getElementById("id").value)
+    const nomefor     = document.getElementById("nomefor").value;
+    const email       = document.getElementById("email").value;
+    const cnpjcpf     = document.getElementById("cnpjcpf").value;
+    const telefone    = document.getElementById("telefone").value;
+    const jurfis      = document.getElementById("fisico").checked;
+    const cep         = document.getElementById("cep").value;
+    const rua         = document.getElementById("rua").value;
+    const cidade      = document.getElementById("cidade").value;
+    const bairro      = document.getElementById("bairro").value;
+    const numero      = Number(document.getElementById("numero").value);
+    const complemento = document.getElementById("complemento").value;
+    const idfor       = Number(document.getElementById("id").value);
 
     fisjur = jurfis ? 'F' : 'J';
 
@@ -121,17 +121,17 @@ async function salvarFornecedor(){
 
     exibirFornecedor()
 
-    document.getElementById("nomefor").value = ''
-    document.getElementById("email").value = ''
-    document.getElementById("cnpjcpf").value = ''
-    document.getElementById("telefone").value = ''
-    document.getElementById("fisico").checked = false
-    document.getElementById("juridico").checked = false
-    document.getElementById("cep").value = ''
-    document.getElementById("rua").value = ''
-    document.getElementById("cidade").value = ''
-    document.getElementById("bairro").value = ''
-    document.getElementById("numero").value = ''
-    document.getElementById("complemento").value = ''
-    document.getElementById("id").value = ''
+    document.getElementById("nomefor").value = '';
+    document.getElementById("email").value = '';
+    document.getElementById("cnpjcpf").value = '';
+    document.getElementById("telefone").value = '';
+    document.getElementById("fisico").checked = false;
+    document.getElementById("juridico").checked = false;
+    document.getElementById("cep").value = '';
+    document.getElementById("rua").value = '';
+    document.getElementById("cidade").value = '';
+    document.getElementById("bairro").value = '';
+    document.getElementById("numero").value = '';
+    document.getElementById("complemento").value = '';
+    document.getElementById("id").value = '';
 }
