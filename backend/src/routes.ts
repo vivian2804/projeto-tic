@@ -4,7 +4,7 @@ import {prisma} from './lib/prisma'
 
 export async function AppRoutes(server:FastifyInstance){
 
-    server.get('/fornecedor', async () => {        
+ server.get('/fornecedor', async () => {        
         const fornecedor = await prisma.tbFornecedores.findMany()
     
         return fornecedor
@@ -127,7 +127,6 @@ export async function AppRoutes(server:FastifyInstance){
         return fornecedorDeleted
     })   
 
-    
 
 
     // CRUD Unidades de medidas
@@ -141,18 +140,18 @@ export async function AppRoutes(server:FastifyInstance){
     server.post('/unidadeMedida/add', async (request) => {
         const postBody = z.object({
             siglaun: z.string(),
-            nomeunidade: z.string()
+            nomeunidade: z.string(),
         })
     
         const {
             siglaun,
-            nomeunidade
+            nomeunidade,
         } = postBody.parse(request.body)
     
         const newUnidadeMedida = await prisma.tbUnidadeMedida.create({
             data: {
                 siglaun,
-                nomeunidade
+                nomeunidade,
             },
         })
     
