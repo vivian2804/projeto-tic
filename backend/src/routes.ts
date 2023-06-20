@@ -199,7 +199,80 @@ export async function AppRoutes(server:FastifyInstance){
         })
     
         return unidadeMedidaDeleted
-    })   
+    }) 
+    
+    
+
+    // CRUD TIPOS DE PRODUTOS
+
+    server.get('/unidadeMedida', async () => {        
+        const unidadeMedida = await prisma.tbUnidadeMedida.findMany()
+    
+        return unidadeMedida
+    })
+    
+    server.post('/unidadeMedida/add', async (request) => {
+        const postBody = z.object({
+            siglaun: z.string(),
+            nomeunidade: z.string()
+        })
+    
+        const {
+            siglaun,
+            nomeunidade
+        } = postBody.parse(request.body)
+    
+        const newUnidadeMedida = await prisma.tbUnidadeMedida.create({
+            data: {
+                siglaun,
+                nomeunidade
+            },
+        })
+    
+        return newUnidadeMedida
+    })        
+    
+    server.put('/unidadeMedida/update', async (request) => {
+        const putBody = z.object({
+            idunidade: z.number(),
+            siglaun: z.string(),
+            nomeunidade: z.string()
+        })
+    
+        const {
+            idunidade,
+            siglaun,
+            nomeunidade
+        } = putBody.parse(request.body)
+
+        const unidadeMedidaUpdate = await prisma.tbUnidadeMedida.updateMany({
+            where: {
+                idunidade: idunidade,
+            },
+            data: {
+                siglaun,
+                nomeunidade
+            },
+        })
+        return (unidadeMedidaUpdate.count >= 1) ?  'Atualização com sucesso' :  'Nada foi atualizado'
+    })
+
+    server.delete('/unidadeMedida/delete/:idunidade', async (request) => {
+        const idParam = z.object({
+            idunidade: z.string(),
+        })
+    
+        const { idunidade } = idParam.parse(request.params)
+        const UnidadeMedidaID = Number(idunidade)
+    
+        const unidadeMedidaDeleted = await prisma.tbUnidadeMedida.delete({
+            where: {
+                idunidade: UnidadeMedidaID,
+            },
+        })
+    
+        return unidadeMedidaDeleted
+    }) 
 }
 
 
