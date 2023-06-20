@@ -205,34 +205,29 @@ export async function AppRoutes(server:FastifyInstance){
 
     // CRUD TIPOS DE PRODUTOS
 
-    server.get('/unidadeMedida', async () => {        
-        const unidadeMedida = await prisma.tbUnidadeMedida.findMany()
+    server.get('/tiposProdutos', async () => {        
+        const tiposProdutos = await prisma.tbTiposProdutos.findMany()
     
-        return unidadeMedida
+        return tiposProdutos
     })
     
-    server.post('/unidadeMedida/add', async (request) => {
-        const postBody = z.object({
-            siglaun: z.string(),
-            nomeunidade: z.string()
+    server.post('/tiposProdutos/add', async (request) => {
+        const bodyData = z.object({
+            nomeTipProd: z.string()
         })
     
-        const {
-            siglaun,
-            nomeunidade
-        } = postBody.parse(request.body)
+        const {nomeTipProd} = bodyData.parse(request.body)
     
-        const newUnidadeMedida = await prisma.tbUnidadeMedida.create({
+        const newTipProd = await prisma.tbTiposProdutos.create({
             data: {
-                siglaun,
-                nomeunidade
+                nometipprod: nomeTipProd
             },
         })
     
-        return newUnidadeMedida
+        return newTipProd
     })        
     
-    server.put('/unidadeMedida/update', async (request) => {
+    server.put('/tiposProdutos/update', async (request) => {
         const putBody = z.object({
             idunidade: z.number(),
             siglaun: z.string(),
@@ -257,7 +252,7 @@ export async function AppRoutes(server:FastifyInstance){
         return (unidadeMedidaUpdate.count >= 1) ?  'Atualização com sucesso' :  'Nada foi atualizado'
     })
 
-    server.delete('/unidadeMedida/delete/:idunidade', async (request) => {
+    server.delete('/tiposProdutos/delete/:idunidade', async (request) => {
         const idParam = z.object({
             idunidade: z.string(),
         })
