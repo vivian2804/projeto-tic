@@ -4,7 +4,9 @@ import {prisma} from './lib/prisma'
 
 export async function AppRoutes(server:FastifyInstance){
 
- server.get('/fornecedor', async () => {        
+    // CRUD Fornecedor
+
+    server.get('/fornecedor', async () => {        
         const fornecedor = await prisma.tbFornecedores.findMany()
     
         return fornecedor
@@ -260,9 +262,63 @@ export async function AppRoutes(server:FastifyInstance){
         })
     
         return tipProdDeleted
-    }) 
+    })
+    
+    // Login
+
+    server.post('/usuario/add', async (request) => {
+        const postBody = z.object({
+            usu_login: z.string(),
+            nome: z.string(),
+            senha: z.string(),
+        })
+
+        const dtcriacao = new Date();
+    
+        const {
+            usu_login,
+            nome,
+            senha,
+        } = postBody.parse(request.body)
+    
+        const newUsuario = await prisma.tbUsuarios.create({
+            data: {
+                usu_login,
+                nome,
+                senha,
+                dtcriacao
+            },
+        })
+    
+        return newUsuario
+    })
+
+    server.post('/cadastro/verifica', async (request) => {
+        const verificaBody = z.object({
+            usu_login: z.string(),
+        })
+
+        const {usu_login} = verificaBody.parse(request.body)
+        const result = await prisma.tbUsuarios.findFirst({
+            where: {
+                usu_login
+            }
+        })
+        return result // retorna null se não encontrar e o objeto se encontra
+    })
+
+    server.post('/usuario/verifica', async (request) => {
+        const verificaBody = z.object({
+            usu_login: z.string(),
+            senha: z.string()
+        })
+        const {usu_login, senha} = verificaBody.parse(request.body)
+        const result = await prisma.tbUsuarios.findFirst({
+            where: {
+                usu_login,
+                senha
+            }
+        })
+        return result // retorna null se não encontrar e o objeto se encontra
+    })
 }
-
-
-
-
