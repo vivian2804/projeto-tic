@@ -213,14 +213,14 @@ export async function AppRoutes(server:FastifyInstance){
     
     server.post('/tiposProdutos/add', async (request) => {
         const bodyData = z.object({
-            nomeTipProd: z.string()
+            nometipprod: z.string()
         })
     
-        const {nomeTipProd} = bodyData.parse(request.body)
+        const {nometipprod} = bodyData.parse(request.body)
     
         const newTipProd = await prisma.tbTiposProdutos.create({
             data: {
-                nometipprod: nomeTipProd
+                nometipprod,
             },
         })
     
@@ -229,44 +229,38 @@ export async function AppRoutes(server:FastifyInstance){
     
     server.put('/tiposProdutos/update', async (request) => {
         const putBody = z.object({
-            idunidade: z.number(),
-            siglaun: z.string(),
-            nomeunidade: z.string()
+            idtipprod: z.number(),
+            nometipprod: z.string()
         })
     
-        const {
-            idunidade,
-            siglaun,
-            nomeunidade
-        } = putBody.parse(request.body)
+        const {idtipprod,nometipprod} = putBody.parse(request.body)
 
-        const unidadeMedidaUpdate = await prisma.tbUnidadeMedida.updateMany({
+        const tipoProdutoUpdate = await prisma.tbTiposProdutos.updateMany({
             where: {
-                idunidade: idunidade,
+                idtipprod: idtipprod,
             },
             data: {
-                siglaun,
-                nomeunidade
+                nometipprod
             },
         })
-        return (unidadeMedidaUpdate.count >= 1) ?  'Atualização com sucesso' :  'Nada foi atualizado'
+        return (tipoProdutoUpdate.count >= 1) ?  'Atualização com sucesso' :  'Nada foi atualizado'
     })
 
     server.delete('/tiposProdutos/delete/:idunidade', async (request) => {
         const idParam = z.object({
-            idunidade: z.string(),
+            idtipprod: z.string(),
         })
     
-        const { idunidade } = idParam.parse(request.params)
-        const UnidadeMedidaID = Number(idunidade)
+        const { idtipprod } = idParam.parse(request.params)
+        const tipProdId = Number(idtipprod)
     
-        const unidadeMedidaDeleted = await prisma.tbUnidadeMedida.delete({
+        const tipProdDeleted = await prisma.tbTiposProdutos.delete({
             where: {
-                idunidade: UnidadeMedidaID,
+                idtipprod: tipProdId,
             },
         })
     
-        return unidadeMedidaDeleted
+        return tipProdDeleted
     }) 
 }
 
