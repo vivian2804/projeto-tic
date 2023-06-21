@@ -198,7 +198,69 @@ export async function AppRoutes(server:FastifyInstance){
         })
     
         return unidadeMedidaDeleted
-    })   
+    }) 
+    
+    
+
+    // CRUD TIPOS DE PRODUTOS
+
+    server.get('/tiposProdutos', async () => {        
+        const tiposProdutos = await prisma.tbTiposProdutos.findMany()
+    
+        return tiposProdutos
+    })
+    
+    server.post('/tiposProdutos/add', async (request) => {
+        const bodyData = z.object({
+            nometipprod: z.string()
+        })
+    
+        const {nometipprod} = bodyData.parse(request.body)
+    
+        const newTipProd = await prisma.tbTiposProdutos.create({
+            data: {
+                nometipprod,
+            },
+        })
+    
+        return newTipProd
+    })        
+    
+    server.put('/tiposProdutos/update', async (request) => {
+        const putBody = z.object({
+            idtipprod: z.number(),
+            nometipprod: z.string()
+        })
+    
+        const {idtipprod,nometipprod} = putBody.parse(request.body)
+
+        const tipoProdutoUpdate = await prisma.tbTiposProdutos.updateMany({
+            where: {
+                idtipprod: idtipprod,
+            },
+            data: {
+                nometipprod
+            },
+        })
+        return (tipoProdutoUpdate.count >= 1) ?  'Atualização com sucesso' :  'Nada foi atualizado'
+    })
+
+    server.delete('/tiposProdutos/delete/:idunidade', async (request) => {
+        const idParam = z.object({
+            idtipprod: z.string(),
+        })
+    
+        const { idtipprod } = idParam.parse(request.params)
+        const tipProdId = Number(idtipprod)
+    
+        const tipProdDeleted = await prisma.tbTiposProdutos.delete({
+            where: {
+                idtipprod: tipProdId,
+            },
+        })
+    
+        return tipProdDeleted
+    }) 
 }
 
 
