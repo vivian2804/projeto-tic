@@ -13,7 +13,7 @@ async function exibirTiposProdutos(){
                 <td>${tipoProduto.idtipprod}</td>
                 <td>${tipoProduto.nometipprod}</td>
                 <td>
-                    <button onclick="removerFornecedor(${tipoProduto.idtipprod})">
+                    <button onclick="removerTipoProduto(${tipoProduto.idtipprod})">
                     <i class="bi bi-trash"></i>
                     </button>
                 </td>
@@ -29,7 +29,7 @@ async function exibirTiposProdutos(){
     document.getElementById("corpoTabela").innerHTML = conteudoTabela
 }
 
-function editarFornecedor(idtipprod, nometipprod){
+async function editarFornecedor(idtipprod, nometipprod){
 
     document.getElementById("idtipprod").value = idtipprod;
     document.getElementById("nometipprod").value = nometipprod;
