@@ -38,7 +38,7 @@ function editarUnidadeMedida(idunidade, siglaun, nomeunidade){
 }
 
 
-async function removerFornecedor(idunidade){
+async function removerUnidadeMedida(idunidade){
     const confirmacao = confirm('Confirma a exclusão da unidade de medida? ')
     if (!confirmacao){
         return 
@@ -56,16 +56,17 @@ async function removerFornecedor(idunidade){
     exibirUnidadesMedidas()
 }
 
-async function salvarFornecedor(){
+async function salvarUnidadeMedida(){
     const siglaun     = document.getElementById("siglaun").value;
-    const nomeunidade       = document.getElementById("nomeunidade").value;
+    const nomeunidade = document.getElementById("nomeunidade").value;
+    const idunidade   = Number(document.getElementById("id").value);
 
     let corpo
     let verbo
     let url
 
     if (idunidade) {
-        corpo = {idfor, siglaun, nomeunidade}
+        corpo = {idunidade, siglaun, nomeunidade}
         verbo = 'PUT'
         url = 'http://localhost:3333/unidadeMedida/update'
     }
