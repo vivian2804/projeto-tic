@@ -245,7 +245,7 @@ export async function AppRoutes(server:FastifyInstance){
         return (tipoProdutoUpdate.count >= 1) ?  'Atualização com sucesso' :  'Nada foi atualizado'
     })
 
-    server.delete('/tiposProdutos/delete/:idunidade', async (request) => {
+    server.delete('/tiposProdutos/delete/:idtipprod', async (request) => {
         const idParam = z.object({
             idtipprod: z.string(),
         })

@@ -45,12 +45,14 @@ async function removerTipoProduto(idtipprod){
     await fetch(`http://localhost:3333/tiposProdutos/delete/${idtipprod}`, {
         method: 'DELETE'
     })
+    
     .then(resposta => {
         alert('Tipo de Produto excluido com sucesso')
     })
     .catch(error => {
         alert('Ops! <br> Ocorreu um problema ao excluir o Tipo de Produto')
     })
+
     exibirTiposProdutos()
 }
 
