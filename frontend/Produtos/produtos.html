@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
   </head>
-  <body onload="exibirFornecedor()">
+  <body onload="carregarDados()">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" href="../index.html">Creche NV.Conceição</a>
@@ -44,96 +44,43 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="mb-3 mt-4">
-                        <label for="nomefor" class="form-label">Nome</label>
-                        <input id="nomefor" class="form-control" type="text" />
+                        <label for="nomeprod" class="form-label">Nome</label>
+                        <input id="nomeprod" class="form-control" type="text" />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3 mt-4">
-                        <label for="email" class="form-label">Email</label>
-                        <input id="email" class="form-control" type="text" />
+                        <label for="quantminima" class="form-label">Quantidade Minima</label>
+                        <input id="quantminima" class="form-control" type="text" />
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="mb-3">
-                        <label for="cnpjcpf" class="form-label"> CPF/CNPJ </label>
-                        <input id="cnpjcpf" class="form-control" type="text"/>
+                        <label for="idunidade" class="form-label">Unidade do Produto</label>
+                        <select class="form-control" id="idunidade">
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
-                        <label for="telefone" class="form-label"> Telefone </label>
-                        <input id="telefone" class="form-control" type="text"/>
+                        <label for="idtipprod" class="form-label"> Tipo do Produto </label>
+                        <select class="form-control" id="idtipprod">
+                        </select>
                     </div>
                 </div>
             </div>
-            <div class="mb-3">
-                <input class="form-check-input" id="fisico" name="fisjur" type="radio"/> 
-                <label for="fisico"> Pessoa Fisica </label>
-                <input class="form-check-input" id="juridico" name="fisjur" type="radio"/> 
-                <label for="juridico"> Pessoa Juridica </label>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="mb-3 mt-2">
-                        <label for="cep" class="form-label"> CEP </label>
-                        <input id="cep" class="form-control" type="text"/>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3 mt-2">
-                        <label for="cidade" class="form-label"> Cidade </label>
-                        <input id="cidade" class="form-control" type="text"/>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label for="rua" class="form-label"> Rua </label>
-                        <input id="rua" class="form-control" type="text"/>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label for="bairro" class="form-label"> Bairro </label>
-                        <input id="bairro" class="form-control" type="text"/>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label for="numero" class="form-label"> Numero </label>
-                        <input id="numero" class="form-control" type="number"/>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label for="complemento" class="form-label"> Complemento </label>
-                        <input id="complemento" class="form-control" type="text"/>
-                    </div>
-                </div>
-            </div>
-            <button type="button" class="btn btn-primary" onClick="salvarFornecedor()">Confirmar</button>
+            <button type="button" class="btn btn-primary" onClick="salvarProduto()">Confirmar</button>
         </form>        
         <table class="table mt-5">
             <thead>
                 <tr>
                     <th scope="col"> Id </th>
                     <th scope="col"> Nome </th>
-                    <th scope="col"> Email </th>
-                    <th scope="col"> CPF/CNPJ </th>
-                    <th scope="col"> Telefone </th>
-                    <th scope="col"> Tipo de Pessoa </th>
-                    <th scope="col"> CEP </th>
-                    <th scope="col"> Cidade </th>
-                    <th scope="col"> Rua </th>
-                    <th scope="col"> Bairro </th>
-                    <th scope="col"> Numero </th>
-                    <th scope="col"> Complemento </th>
+                    <th scope="col"> Quantidade Minima </th>
+                    <th scope="col"> Unidade do Produto </th>
+                    <th scope="col"> Tipo do Produto </th>
                     <th> Remover </th>
                     <th> Atualizar </th>
                   </tr>
@@ -143,7 +90,7 @@
             </tbody>
         </table>
     </div>
-    <script src="fornecedor.js"> </script>
+    <script src="produtos.js"> </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
   </body>
 </html>
