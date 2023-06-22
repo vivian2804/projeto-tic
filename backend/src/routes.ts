@@ -440,4 +440,65 @@ export async function AppRoutes(server:FastifyInstance){
 
         return produtosDeleted
     })
+
+    // CRUD Locais de estoque
+
+    server.get('/locaisEstoque', async () => {
+        const locaisEstoque = await prisma.tbLocais.findMany()
+
+        return locaisEstoque
+    })
+
+    server.post('/locaisEstoque/add', async (request) => {
+        const bodyData = z.object({
+            nomelocal : z.string()
+        })
+
+        const {nomelocal} = bodyData.parse(request.body)
+
+        const newLocalEstoque = await prisma.tbLocais.create({
+            data: {
+                nomelocal
+            },
+        })
+
+        return newLocalEstoque
+    })
+
+    server.put('/locaisEstoque/update', async (request) => {
+        const putBody = z.object({
+            idlocal : z.number(),
+            nomelocal : z.string()
+        })
+
+        const {idlocal,
+              nomelocal} = putBody.parse(request.body)
+
+        const locaisUpdate = await prisma.tbLocais.updateMany({
+            where: {
+                idlocal : idlocal,
+            },
+            data: {
+                nomelocal
+            },
+        })
+        return (locaisUpdate.count >= 1) ?  'Atualização realizada com sucesso!' :  'Nada foi atualizado!'
+    })
+
+    server.delete('/locaisEstoque/delete/:LocalId', async (request) => {
+        const idParam = z.object({
+            LocalId: z.string(),
+        })
+
+        const { LocalId } = idParam.parse(request.params)
+        const idlocal = Number(LocalId)
+
+        const locaisDeleted = await prisma.tbLocais.delete({
+            where: {
+                idlocal: idlocal,
+            },
+        })
+
+        return locaisDeleted
+    })
 }
