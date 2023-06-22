@@ -1,24 +1,24 @@
-async function exibirTiposProdutos(){    
-    const tiposProdutos = await fetch(`http://localhost:3333/tiposProdutos`)
+async function exibirLocais(){    
+    const locaisEstoque = await fetch(`http://localhost:3333/locaisEstoque`)
                         .then(resposta => {
                             return resposta.json()
                         })
 
     let conteudoTabela = ''
 
-    tiposProdutos.forEach(tipoProduto => {            
+    locaisEstoque.forEach(localEstoque => {            
 
         conteudoTabela += `
             <tr>
-                <td>${tipoProduto.idtipprod}</td>
-                <td>${tipoProduto.nometipprod}</td>
+                <td>${localEstoque.idlocal}</td>
+                <td>${localEstoque.nomelocal}</td>
                 <td>
-                    <button onclick="removerTipoProduto(${tipoProduto.idtipprod})">
+                    <button onclick="removerLocal(${localEstoque.idlocal})">
                     <i class="bi bi-trash"></i>
                     </button>
                 </td>
                 <td>
-                    <button onclick="editarFornecedor(${tipoProduto.idtipprod}, '${tipoProduto.nometipprod}')">
+                    <button onclick="editarLocal(${localEstoque.idlocal}, '${localEstoque.nomelocal}')">
                     <i class="bi bi-pencil"></i>
                     </button>
                 </td>
@@ -29,53 +29,53 @@ async function exibirTiposProdutos(){
     document.getElementById("corpoTabela").innerHTML = conteudoTabela
 }
 
-async function editarFornecedor(idtipprod, nometipprod){
+async function editarLocal(idlocal, nomelocal){
 
-    document.getElementById("idtipprod").value = idtipprod;
-    document.getElementById("nometipprod").value = nometipprod;
+    document.getElementById("idlocal").value = idlocal;
+    document.getElementById("nomelocal").value = nomelocal;
 }
 
 
-async function removerTipoProduto(idtipprod){
-    const confirmacao = confirm('Confirma a exclusão do Tipo de Produto? ')
+async function removerLocal(idlocal){
+    const confirmacao = confirm('Confirma a exclusão do Local de Estoque? ')
     if (!confirmacao){
         return 
     }
     
-    await fetch(`http://localhost:3333/tiposProdutos/delete/${idtipprod}`, {
+    await fetch(`http://localhost:3333/locaisEstoque/delete/${idlocal}`, {
         method: 'DELETE'
     })
     
     .then(resposta => {
-        alert('Tipo de Produto excluido com sucesso')
+        alert('Local de Estoque excluido com sucesso')
     })
     .catch(error => {
-        alert('Ops! <br> Ocorreu um problema ao excluir o Tipo de Produto')
+        alert('Ops! <br> Ocorreu um problema ao excluir o Local de Estoque')
     })
 
-    exibirTiposProdutos()
+    exibirLocais()
 }
 
-async function salvarTipoProduto(){
-    const nometipprod     = document.getElementById("nometipprod").value;
-    const idtipprod       = Number(document.getElementById("idtipprod").value);
+async function salvarLocal(){
+    const nomelocal     = document.getElementById("nomelocal").value;
+    const idlocal       = Number(document.getElementById("idlocal").value);
 
     let corpo
     let verbo
     let url
 
-    if (idtipprod) {
-        corpo = {idtipprod, nometipprod}
+    if (idlocal) {
+        corpo = {idlocal, nomelocal}
         verbo = 'PUT'
-        url = 'http://localhost:3333/tiposProdutos/update'
+        url = 'http://localhost:3333/locaisEstoque/update'
     }
     else {
-        corpo = {nometipprod}
+        corpo = {nomelocal}
         verbo = 'POST'
-        url = 'http://localhost:3333/tiposProdutos/add'
+        url = 'http://localhost:3333/locaisEstoque/add'
     }
      
-    const tipoProduto = await fetch(url, {
+    const localEstoque = await fetch(url, {
         method: verbo,
         body: JSON.stringify(corpo),
         headers: {
@@ -89,8 +89,8 @@ async function salvarTipoProduto(){
         alert('Operação falhou')
     })
 
-    exibirTiposProdutos()
+    exibirLocais()
 
-    document.getElementById("nometipprod").value = '';
-    document.getElementById("idtipprod").value = '';
+    document.getElementById("nomelocal").value = '';
+    document.getElementById("idlocal").value = '';
 }
