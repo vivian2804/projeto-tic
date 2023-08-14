@@ -512,15 +512,19 @@ export async function AppRoutes(server:FastifyInstance){
     
         server.post('/estoque/add', async (request) => {
             const putBody = z.object({
-                idproduto: z.number(),
+                idmovimento: z.number(),
+                seqitem: z.number(),
                 idlocal: z.number(),
+                idproduto: z.number(),
                 quantidade: z.number(),
                 dtinc: z.date()
             })
     
             const {
-                idproduto,
+                idmovimento,
+                seqitem,
                 idlocal,
+                idproduto,
                 quantidade,
                 dtinc
             } = putBody.parse(request.body)
@@ -542,11 +546,13 @@ export async function AppRoutes(server:FastifyInstance){
             if (!confereProduto) {
                 return ('Produto não existe');
             }
-            
+    
             const newEntry = await prisma.tbEstoque.create({
                 data: {
-                    idproduto,
+                    idmovimento,
+                    seqitem,
                     idlocal,
+                    idproduto,
                     quantidade,
                     dtinc
                 },
@@ -558,15 +564,19 @@ export async function AppRoutes(server:FastifyInstance){
         server.put('/estoque/update', async (request) => {
             const putBody = z.object({
                 idestoque: z.number(),
-                idproduto: z.number(),
+                idmovimento: z.number(),
+                seqitem: z.number(),
                 idlocal: z.number(),
+                idproduto: z.number(),
                 quantidade: z.number(),
                 dtinc: z.date()
             })
         
             const { idestoque,
-                    idproduto,
+                    idmovimento,
+                    seqitem,
                     idlocal,
+                    idproduto,
                     quantidade,
                     dtinc} = putBody.parse(request.body)
     
@@ -593,8 +603,10 @@ export async function AppRoutes(server:FastifyInstance){
                     idestoque: idestoque,
                 },
                 data: {
-                    idproduto,
+                    idmovimento,
+                    seqitem,
                     idlocal,
+                    idproduto,
                     quantidade,
                     dtinc
                 },
