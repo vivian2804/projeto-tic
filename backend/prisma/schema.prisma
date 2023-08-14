@@ -7,19 +7,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model tbestoque {
+model tbEstoque {
   idestoque  Int        @default(autoincrement())
   idproduto  Int
   idlocal    Int?
   quantidade Decimal?   @db.Decimal
   dtinc      DateTime?  @db.Date
-  tblocais   tblocais?  @relation(fields: [idlocal], references: [idlocal], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbestoque_idlocal")
-  tbprodutos tbprodutos @relation(fields: [idproduto], references: [idproduto], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbestoque_idproduto")
+  tblocais   tbLocais?  @relation(fields: [idlocal], references: [idlocal], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbestoque_idlocal")
+  tbprodutos tbProdutos @relation(fields: [idproduto], references: [idproduto], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbestoque_idproduto")
 
   @@id([idestoque, idproduto], map: "pk_tbestoque_idestoque_idmovimento_seqitem")
 }
 
-model tbfornecedores {
+model tbFornecedores {
   idfor        Int            @id(map: "pk_tbfornecedores_idfor") @default(autoincrement())
   nomefor      String?        @db.VarChar(80)
   fisjur       String?        @db.VarChar(1)
@@ -32,45 +32,45 @@ model tbfornecedores {
   numero       Int?
   complemento  String?        @db.VarChar(20)
   email        String?        @unique(map: "uk_tbfornecedores_email") @db.VarChar(60)
-  tbmovimentos tbmovimentos[]
-  tbnf         tbnf[]
+  tbmovimentos tbMovimentos[]
+  tbnf         tbNf[]
 }
 
-model tblocais {
+model tbLocais {
   idlocal    Int          @id(map: "pk_tblocais_idlocal") @default(autoincrement())
   nomelocal  String?      @db.VarChar(40)
-  tbestoque  tbestoque[]
-  tbmovitens tbmovitens[]
+  tbestoque  tbEstoque[]
+  tbmovitens tbMovitens[]
 }
 
-model tbmovimentos {
+model tbMovimentos {
   idmovimento         Int             @id(map: "pk_tbmovimentos_idmovimento") @default(autoincrement())
   tipmov              String?         @db.VarChar(2)
   idfor               Int?
   idusuario_alteracao Int?
   dtinc               DateTime?       @db.Date
-  tbfornecedores      tbfornecedores? @relation(fields: [idfor], references: [idfor], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbmovimentos_idfor")
-  tbusuarios          tbusuarios?     @relation(fields: [idusuario_alteracao], references: [idusuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbmovimentos_idusuario")
-  tbmovitens          tbmovitens[]
-  tbnf                tbnf?
+  tbfornecedores      tbFornecedores? @relation(fields: [idfor], references: [idfor], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbmovimentos_idfor")
+  tbusuarios          tbUsuarios?     @relation(fields: [idusuario_alteracao], references: [idusuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbmovimentos_idusuario")
+  tbmovitens          tbMovitens[]
+  tbnf                tbNf?
 }
 
-model tbmovitens {
+model tbMovitens {
   idmovimento  Int
   seqitem      Int          @default(autoincrement())
   idproduto    Int
   idlocal      Int?
   dtinc        DateTime?    @db.Date
   quantidade   Decimal?     @db.Decimal
-  tblocais     tblocais?    @relation(fields: [idlocal], references: [idlocal], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbmovitens_idlocal")
-  tbmovimentos tbmovimentos @relation(fields: [idmovimento], references: [idmovimento], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbmovitens_idmovimento")
-  tbprodutos   tbprodutos   @relation(fields: [idproduto], references: [idproduto], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbmovitens_idproduto")
-  tbnfitens    tbnfitens[]
+  tblocais     tbLocais?    @relation(fields: [idlocal], references: [idlocal], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbmovitens_idlocal")
+  tbmovimentos tbMovimentos @relation(fields: [idmovimento], references: [idmovimento], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbmovitens_idmovimento")
+  tbprodutos   tbProdutos   @relation(fields: [idproduto], references: [idproduto], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbmovitens_idproduto")
+  tbnfitens    tbNfitens[]
 
   @@id([idmovimento, seqitem, idproduto], map: "pk_tbmovitens_idmovimento_seqitem_idproduto")
 }
 
-model tbnf {
+model tbNf {
   idnf               Int             @id(map: "pk_tbnf_idnf") @default(autoincrement())
   numnf              Int?            @unique(map: "uk_tbnf_numnf")
   idmovimento        Int?            @unique(map: "uk_tbnf_idmovimento")
@@ -79,13 +79,13 @@ model tbnf {
   idusuario_inclusao Int?
   dtemissao          DateTime?       @db.Date
   vlrtotal           Decimal?        @db.Decimal
-  tbmovimentos       tbmovimentos?   @relation(fields: [idmovimento], references: [idmovimento], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbmovimentos_idmovimento")
-  tbfornecedores     tbfornecedores? @relation(fields: [idfor], references: [idfor], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbnf_idfor")
-  tbusuarios         tbusuarios?     @relation(fields: [idusuario_inclusao], references: [idusuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbnf_idusuario")
-  tbnfitens          tbnfitens[]
+  tbmovimentos       tbMovimentos?   @relation(fields: [idmovimento], references: [idmovimento], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbmovimentos_idmovimento")
+  tbfornecedores     tbFornecedores? @relation(fields: [idfor], references: [idfor], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbnf_idfor")
+  tbusuarios         tbUsuarios?     @relation(fields: [idusuario_inclusao], references: [idusuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbnf_idusuario")
+  tbnfitens          tbNfitens[]
 }
 
-model tbnfitens {
+model tbNfitens {
   idnf        Int
   idmovimento Int?
   seqitem     Int
@@ -93,57 +93,57 @@ model tbnfitens {
   vlrunitario Decimal?    @db.Decimal
   quantidade  Decimal?    @db.Decimal
   vlrtotitem  Decimal?    @db.Decimal
-  tbmovitens  tbmovitens? @relation(fields: [idmovimento, seqitem, idproduto], references: [idmovimento, seqitem, idproduto], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbnfitens_idmovimento_seqitem_idproduto")
-  tbnf        tbnf        @relation(fields: [idnf], references: [idnf], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbnfitens_idnf")
+  tbmovitens  tbMovitens? @relation(fields: [idmovimento, seqitem, idproduto], references: [idmovimento, seqitem, idproduto], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbnfitens_idmovimento_seqitem_idproduto")
+  tbnf        tbNf        @relation(fields: [idnf], references: [idnf], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbnfitens_idnf")
 
   @@id([idnf, seqitem, idproduto], map: "pk_tbnfitens_idnf_seqitem_idprodut")
 }
 
-model tbprodcomposicao {
+model tbProdcomposicao {
   idcomp                                                Int        @default(autoincrement())
   idproduto                                             Int
   idprodutocomp                                         Int
   quantidade                                            Decimal?   @db.Decimal
-  tbprodutos_tbprodcomposicao_idprodutoTotbprodutos     tbprodutos @relation("tbprodcomposicao_idprodutoTotbprodutos", fields: [idproduto], references: [idproduto], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbcomposicao_idproduto")
-  tbprodutos_tbprodcomposicao_idprodutocompTotbprodutos tbprodutos @relation("tbprodcomposicao_idprodutocompTotbprodutos", fields: [idprodutocomp], references: [idproduto], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbcomposicao_idprodutocomp")
+  tbprodutos_tbprodcomposicao_idprodutoTotbprodutos     tbProdutos @relation("tbprodcomposicao_idprodutoTotbprodutos", fields: [idproduto], references: [idproduto], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbcomposicao_idproduto")
+  tbprodutos_tbprodcomposicao_idprodutocompTotbprodutos tbProdutos @relation("tbprodcomposicao_idprodutocompTotbprodutos", fields: [idprodutocomp], references: [idproduto], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbcomposicao_idprodutocomp")
 
   @@id([idcomp, idproduto, idprodutocomp], map: "pk_tbcomp_idcomp_idprod_idprodcomp")
 }
 
-model tbprodutos {
+model tbProdutos {
   idproduto                                                   Int                @id(map: "pk_tbprodutos_idproduto") @default(autoincrement())
   nomeprod                                                    String?            @db.VarChar(60)
   idtipprod                                                   Int?
   idunidade                                                   Int?
   quantminima                                                 Int?
-  tbestoque                                                   tbestoque[]
-  tbmovitens                                                  tbmovitens[]
-  tbprodcomposicao_tbprodcomposicao_idprodutoTotbprodutos     tbprodcomposicao[] @relation("tbprodcomposicao_idprodutoTotbprodutos")
-  tbprodcomposicao_tbprodcomposicao_idprodutocompTotbprodutos tbprodcomposicao[] @relation("tbprodcomposicao_idprodutocompTotbprodutos")
-  tbtiposprodutos                                             tbtiposprodutos?   @relation(fields: [idtipprod], references: [idtipprod], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbprodutos_idtipprod")
-  tbunidademedida                                             tbunidademedida?   @relation(fields: [idunidade], references: [idunidade], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbprodutos_idunidade")
+  tbestoque                                                   tbEstoque[]
+  tbmovitens                                                  tbMovitens[]
+  tbprodcomposicao_tbprodcomposicao_idprodutoTotbprodutos     tbProdcomposicao[] @relation("tbprodcomposicao_idprodutoTotbprodutos")
+  tbprodcomposicao_tbprodcomposicao_idprodutocompTotbprodutos tbProdcomposicao[] @relation("tbprodcomposicao_idprodutocompTotbprodutos")
+  tbtiposprodutos                                             tbTiposprodutos?   @relation(fields: [idtipprod], references: [idtipprod], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbprodutos_idtipprod")
+  tbunidademedida                                             tbUnidademedida?   @relation(fields: [idunidade], references: [idunidade], onDelete: NoAction, onUpdate: NoAction, map: "fk_tbprodutos_idunidade")
 }
 
-model tbtiposprodutos {
+model tbTiposprodutos {
   idtipprod   Int          @id(map: "pk_tbtiposprodutos") @default(autoincrement())
   nometipprod String?      @db.VarChar(40)
-  tbprodutos  tbprodutos[]
+  tbprodutos  tbProdutos[]
 }
 
-model tbunidademedida {
+model tbUnidademedida {
   idunidade   Int          @id(map: "pk_tbunidademedida_idunidade") @default(autoincrement())
   siglaun     String?      @unique(map: "uk_tbunidademedida_siglaun") @db.VarChar(5)
   nomeunidade String?      @db.VarChar(30)
-  tbprodutos  tbprodutos[]
+  tbprodutos  tbProdutos[]
 }
 
-model tbusuarios {
+model tbUsuarios {
   idusuario    Int            @id(map: "pk_tbusuarios_idusuario") @default(autoincrement())
   usu_login    String?        @unique(map: "uk_tbusuarios_usu_login") @db.VarChar(15)
   nome         String?        @db.VarChar(15)
   senha        String?        @db.VarChar(20)
   dtcriacao    DateTime?      @db.Date
   usu_admin    Boolean?
-  tbmovimentos tbmovimentos[]
-  tbnf         tbnf[]
+  tbmovimentos tbMovimentos[]
+  tbnf         tbNf[]
 }
