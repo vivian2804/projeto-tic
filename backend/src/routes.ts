@@ -501,4 +501,134 @@ export async function AppRoutes(server:FastifyInstance){
 
         return locaisDeleted
     })
+
+        //CRUD - ESTOQUE (Conectada a outras entidades)
+
+        server.get('/estoque', async () => {
+            const estoque = await prisma.tbEstoque.findMany()
+    
+            return estoque
+        })
+    
+        server.post('/estoque/add', async (request) => {
+            const putBody = z.object({
+                idmovimento: z.number(),
+                seqitem: z.number(),
+                idlocal: z.number(),
+                idproduto: z.number(),
+                quantidade: z.number(),
+                dtinc: z.date()
+            })
+    
+            const {
+                idmovimento,
+                seqitem,
+                idlocal,
+                idproduto,
+                quantidade,
+                dtinc
+            } = putBody.parse(request.body)
+    
+            //Verifica se existe id do local
+            const confereLocal = await prisma.tbLocais.findUnique({
+                where: { idlocal: idlocal },
+              });
+    
+             if (!confereLocal) {
+                return ('Local de estoque não existe');
+            }
+    
+            //Verifica se existe id do produto
+            const confereProduto = await prisma.tbProdutos.findUnique({
+                where: { idproduto: idproduto },
+              });
+    
+            if (!confereProduto) {
+                return ('Produto não existe');
+            }
+    
+            const newEntry = await prisma.tbEstoque.create({
+                data: {
+                    idmovimento,
+                    seqitem,
+                    idlocal,
+                    idproduto,
+                    quantidade,
+                    dtinc
+                },
+            })
+    
+            return newEntry
+        })
+    
+        server.put('/estoque/update', async (request) => {
+            const putBody = z.object({
+                idestoque: z.number(),
+                idmovimento: z.number(),
+                seqitem: z.number(),
+                idlocal: z.number(),
+                idproduto: z.number(),
+                quantidade: z.number(),
+                dtinc: z.date()
+            })
+        
+            const { idestoque,
+                    idmovimento,
+                    seqitem,
+                    idlocal,
+                    idproduto,
+                    quantidade,
+                    dtinc} = putBody.parse(request.body)
+    
+            //Verifica se existe id de local
+            const confereLocal = await prisma.tbLocais.findUnique({
+                where: { idlocal: idlocal },
+              });
+    
+             if (!confereLocal) {
+                return ('Local não existe');
+            }
+    
+            //Verifica se existe id de tipo do produto
+            const confereProduto = await prisma.tbProdutos.findUnique({
+                where: { idproduto: idproduto },
+              });
+    
+            if (!confereProduto) {
+                return ('Produto não existe');
+            }        
+    
+            const estoqueUpdate = await prisma.tbEstoque.updateMany({
+                where: {
+                    idestoque: idestoque,
+                },
+                data: {
+                    idmovimento,
+                    seqitem,
+                    idlocal,
+                    idproduto,
+                    quantidade,
+                    dtinc
+                },
+            })
+            return (estoqueUpdate.count >= 1) ?  'Atualização com sucesso' :  'Nada foi atualizado'
+        })
+    
+        server.delete('/estoque/delete/:estoqueId', async (request) => {
+            const idParam = z.object({
+                estoqueId: z.string(),
+            })
+    
+            const { estoqueId } = idParam.parse(request.params)
+    
+            const idestoque = Number(estoqueId)
+    
+            const estoqueApagado = await prisma.tbEstoque.delete({
+                where: {
+                    idestoque: idestoque,
+                },
+            })
+    
+            return estoqueApagado
+        })
 }
