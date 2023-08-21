@@ -631,4 +631,81 @@ export async function AppRoutes(server:FastifyInstance){
     
             return estoqueApagado
         })
+
+    // CRUD tbMovimentos
+
+    server.get('/movimentos', async () => {
+        const movimentos = await prisma.tbMovimentos.findMany()
+
+        return movimentos
+    })
+
+    server.post('/movimentos/add', async (request) => {
+        const bodyData = z.object({
+            tipmov : z.string(),
+            idfor: z.number(),
+            idusuario_alteracao: z.number(),
+            dtinc: z.date()
+        })
+
+        const {tipmov, idfor, idusuario_alteracao, dtinc} = bodyData.parse(request.body)
+
+        const newMovimento = await prisma.tbMovimentos.create({
+            data: {
+                tipmov,
+                idfor,
+                idusuario_alteracao,
+                dtinc
+            },
+        })
+
+        return newMovimento
+    })
+
+    server.put('/movimentos/update', async (request) => {
+        const putBody = z.object({
+            idmovimento : z.number(),
+            tipmov : z.string(),
+            idfor: z.number(),
+            idusuario_alteracao: z.number(),
+            dtinc: z.date()
+        })
+
+        const {idmovimento,
+            tipmov,
+            idfor,
+            idusuario_alteracao,
+            dtinc} = putBody.parse(request.body)
+
+        const movimentosUpdate = await prisma.tbMovimentos.updateMany({
+            where: {
+                idmovimento : idmovimento,
+            },
+            data: {
+                idmovimento,
+                tipmov,
+                idfor,
+                idusuario_alteracao,
+                dtinc
+            },
+        })
+        return (movimentosUpdate.count >= 1) ?  'Atualização realizada com sucesso!' :  'Nada foi atualizado!'
+    })
+
+    server.delete('/movimentos/delete/:movID', async (request) => {
+        const idParam = z.object({
+            movID: z.string(),
+        })
+
+        const { movID } = idParam.parse(request.params)
+        const idmov = Number(movID)
+
+        const movimentoDeleted = await prisma.tbMovimentos.delete({
+            where: {
+                idmovimento: idmov,
+            },
+        })
+
+        return movimentoDeleted
+    })
 }
