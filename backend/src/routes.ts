@@ -5,6 +5,7 @@ import {prisma} from './lib/prisma'
 export async function AppRoutes(server:FastifyInstance){
 
     // CRUD Fornecedor
+    //vivinha
 
     server.get('/fornecedor', async () => {        
         const fornecedor = await prisma.tbFornecedores.findMany()
